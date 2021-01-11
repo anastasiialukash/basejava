@@ -9,48 +9,48 @@ import java.util.Objects;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    private final Resume[] storage = new Resume[10000];
+    private final Resume[] storage = new Resume[10_000];
     private int size = 0;
-    private int uuidIndex = 0;
 
     public void clear() {
-        Arrays.fill(storage, null);
+        Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
-    public void save(Resume r) {
+    public void save(Resume resume) {
         if (size == storage.length) {
             System.out.println("The storage is overflowed");
+        } else if (getElementIndex(resume.getUuid()) >= 0) {
+            System.out.println("Resume " + resume.getUuid() + " already exists");
         } else {
-            if (isPresent(r.uuid)) {
-                System.out.println("Resume " + r.uuid + " already exists");
-            } else {
-                storage[size] = r;
-                size++;
-            }
+            storage[size] = resume;
+            size++;
         }
     }
 
+
     public void update(String currentUuid, String updatedUuid) {
-        if (isPresent(currentUuid)) {
-            storage[uuidIndex].uuid = updatedUuid;
+        int index = getElementIndex(currentUuid);
+        if (index >= 0) {
+            storage[index].setUuid(updatedUuid);
         } else {
             System.out.println("Resume " + currentUuid + " is not found");
         }
     }
 
     public Resume get(String uuid) {
-        if (isPresent(uuid)) {
-            return storage[uuidIndex];
-        } else {
-            System.out.println("Resume " + uuid + " is not found");
+        int index = getElementIndex(uuid);
+        if (getElementIndex(uuid) >= 0) {
+            return storage[index];
         }
+        System.out.println("Resume " + uuid + " is not found");
         return null;
     }
 
     public void delete(String uuid) {
-        if (isPresent(uuid)) {
-            storage[uuidIndex] = storage[size - 1];
+        int index = getElementIndex(uuid);
+        if (index >= 0) {
+            storage[index] = storage[size - 1];
             storage[size - 1] = null;
             size--;
         } else {
@@ -69,13 +69,12 @@ public class ArrayStorage {
         return size;
     }
 
-    public boolean isPresent(String uuid) {
+    public int getElementIndex(String uuid) {
         for (int i = 0; i < size; i++) {
-            if (storage[i].uuid.equals(uuid)) {
-                uuidIndex = i;
-                return true;
+            if (storage[i].getUuid().equals(uuid)) {
+                return i;
             }
         }
-        return false;
+        return -1;
     }
 }
