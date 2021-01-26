@@ -1,7 +1,6 @@
 package com.urise.webapp.storage;
 
 import com.urise.webapp.exception.ExistStorageException;
-import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
@@ -28,34 +27,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         }
     }
 
-    public void delete(String uuid) {
-        int index = getElementIndex(uuid);
-        if (index >= 0) {
-            replaceDeletedElement(index);
-            storage[size - 1] = null;
-            size--;
-        } else {
-            throw new NotExistStorageException(uuid);
-        }
-    }
-
-    public Resume get(String uuid) {
-        int index = getElementIndex(uuid);
-        if (getElementIndex(uuid) >= 0) {
-            return storage[index];
-        }
-        throw new NotExistStorageException(uuid);
-    }
-
-    public void update(Resume resume) {
-        int index = getElementIndex(resume.getUuid());
-        if (index >= 0) {
-            storage[index] = resume;
-        } else {
-            throw new NotExistStorageException(resume.getUuid());
-        }
-    }
-
     public int size() {
         return size;
     }
@@ -67,6 +38,23 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
+    }
+
+    @Override
+    protected void deleteElement(int index) {
+        replaceDeletedElement(index);
+        storage[size - 1] = null;
+        size--;
+    }
+
+    @Override
+    protected Resume getResume(int index) {
+        return storage[index];
+    }
+
+    @Override
+    protected void updateResume(Resume resume, int index) {
+        storage[index] = resume;
     }
 
     protected abstract void insertElement(Resume resume, int index);

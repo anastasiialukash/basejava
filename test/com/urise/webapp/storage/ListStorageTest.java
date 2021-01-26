@@ -20,8 +20,6 @@ public class ListStorageTest {
     private static final Resume RESUME_2 = new Resume(UUID_2);
     private static final Resume RESUME_3 = new Resume(UUID_3);
     private static final Resume RESUME_NEW = new Resume(UUID_NEW);
-    private static final Resume RESUME_DUMMY = new Resume(UUID_DUMMY);
-
 
     public ListStorageTest() {
         this.storage = new ListStorage();

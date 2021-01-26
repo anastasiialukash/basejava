@@ -7,7 +7,7 @@ import com.urise.webapp.storage.ListStorage;
  * Test for your com.urise.webapp.storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    //static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
+//    static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
 //    static final SortedArrayStorage ARRAY_STORAGE = new SortedArrayStorage();
     static final ListStorage ARRAY_STORAGE = new ListStorage();
 
@@ -28,14 +28,14 @@ public class MainTestArrayStorage {
         System.out.println("Get r1: " + ARRAY_STORAGE.get(r1.getUuid()));
         System.out.println("Size: " + ARRAY_STORAGE.size());
 
-        System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
+//        System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
 
-        ARRAY_STORAGE.save(r1);
-        printAll();
-        ARRAY_STORAGE.delete(r1.getUuid());
-        printAll();
-        ARRAY_STORAGE.update(r1);
-        printAll();
+//        ARRAY_STORAGE.save(r1);
+//        printAll();
+//        ARRAY_STORAGE.delete(r1.getUuid());
+//        printAll();
+//        ARRAY_STORAGE.update(r1);
+//        printAll();
         ARRAY_STORAGE.save(r4);
         printAll();
         ARRAY_STORAGE.update(r4);
