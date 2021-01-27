@@ -7,31 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListStorage extends AbstractStorage {
-    protected final List<Resume> resumes = new ArrayList<>();
-
-    @Override
-    public void clear() {
-        resumes.clear();
-    }
-
-    @Override
-    public void save(Resume r) {
-        int index = getElementIndex(r.getUuid());
-        if (index >= 0) {
-            throw new ExistStorageException(r.getUuid());
-        }
-        resumes.add(r);
-    }
-
-    @Override
-    public Resume[] getAll() {
-        return resumes.toArray(new Resume[0]);
-    }
-
-    @Override
-    public int size() {
-        return resumes.size();
-    }
+    private final List<Resume> resumes = new ArrayList<>();
 
     @Override
     protected int getElementIndex(String uuid) {
@@ -56,5 +32,28 @@ public class ListStorage extends AbstractStorage {
     @Override
     protected void updateResume(Resume resume, int index) {
         resumes.set(index, resume);
+    }
+
+    @Override
+    protected void saveResume(Resume resume, int index) {
+        if (index >= 0) {
+            throw new ExistStorageException(resume.getUuid());
+        }
+        resumes.add(resume);
+    }
+
+    @Override
+    protected int getSize() {
+        return resumes.size();
+    }
+
+    @Override
+    protected Resume[] getAllResume() {
+        return resumes.toArray(new Resume[0]);
+    }
+
+    @Override
+    protected void clearStorage() {
+        resumes.clear();
     }
 }

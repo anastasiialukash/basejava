@@ -15,27 +15,18 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected final Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
-    public void save(Resume resume) {
-        int index = getElementIndex(resume.getUuid());
-        if (size == storage.length) {
-            throw new StorageException("The storage is overflowed", resume.getUuid());
-        } else if (getElementIndex(resume.getUuid()) >= 0) {
-            throw new ExistStorageException(resume.getUuid());
-        } else {
-            insertElement(resume, index);
-            size++;
-        }
-    }
-
-    public int size() {
+    @Override
+    protected int getSize() {
         return size;
     }
 
-    public Resume[] getAll() {
+    @Override
+    protected Resume[] getAllResume() {
         return Arrays.stream(storage).filter(Objects::nonNull).toArray((Resume[]::new));
     }
 
-    public void clear() {
+    @Override
+    protected void clearStorage() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }
@@ -55,6 +46,18 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     @Override
     protected void updateResume(Resume resume, int index) {
         storage[index] = resume;
+    }
+
+    @Override
+    protected void saveResume(Resume resume, int index) {
+        if (size == storage.length) {
+            throw new StorageException("The storage is overflowed", resume.getUuid());
+        } else if (getElementIndex(resume.getUuid()) >= 0) {
+            throw new ExistStorageException(resume.getUuid());
+        } else {
+            insertElement(resume, index);
+            size++;
+        }
     }
 
     protected abstract void insertElement(Resume resume, int index);
