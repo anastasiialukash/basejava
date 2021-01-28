@@ -36,17 +36,6 @@ public abstract class AbstractStorage implements Storage {
         }
     }
 
-    public int size() {
-        return getSize();
-    }
-
-    public Resume[] getAll() {
-        return getAllResume();
-    }
-
-    public void clear() {
-        clearStorage();
-    }
 
     protected abstract int getElementIndex(String uuid);
 
@@ -57,10 +46,4 @@ public abstract class AbstractStorage implements Storage {
     protected abstract void updateResume(Resume resume, int index);
 
     protected abstract void saveResume(Resume resume, int index);
-
-    protected abstract int getSize();
-
-    protected abstract Resume[] getAllResume();
-
-    protected abstract void clearStorage();
 }

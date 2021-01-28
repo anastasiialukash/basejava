@@ -16,19 +16,19 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected int size = 0;
 
     @Override
-    protected int getSize() {
-        return size;
+    public void clear() {
+        Arrays.fill(storage, 0, size, null);
+        size = 0;
     }
 
     @Override
-    protected Resume[] getAllResume() {
+    public Resume[] getAll() {
         return Arrays.stream(storage).filter(Objects::nonNull).toArray((Resume[]::new));
     }
 
     @Override
-    protected void clearStorage() {
-        Arrays.fill(storage, 0, size, null);
-        size = 0;
+    public int size() {
+        return 0;
     }
 
     @Override
