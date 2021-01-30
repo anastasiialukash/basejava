@@ -1,49 +1,57 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.Resume;
 
 public abstract class AbstractStorage implements Storage {
 
     public void save(Resume resume) {
-        int index = getElementIndex(resume.getUuid());
-        saveResume(resume, index);
+        Object searchParameter = getSearchParameterForNotExistedElement(resume.getUuid());
+        saveElement(resume, searchParameter);
     }
 
     public void delete(String uuid) {
-        int index = getElementIndex(uuid);
-        if (index >= 0) {
-            deleteElement(index);
-        } else {
-            throw new NotExistStorageException(uuid);
-        }
+        Object searchParameter = getSearchParameterForExistedElement(uuid);
+        deleteElement(searchParameter);
     }
 
     public Resume get(String uuid) {
-        int index = getElementIndex(uuid);
-        if (getElementIndex(uuid) >= 0) {
-            return getResume(index);
-        }
-        throw new NotExistStorageException(uuid);
+        Object searchParameter = getSearchParameterForExistedElement(uuid);
+        return getElement(searchParameter);
     }
 
     public void update(Resume resume) {
-        int index = getElementIndex(resume.getUuid());
-        if (index >= 0) {
-            updateResume(resume, index);
-        } else {
-            throw new NotExistStorageException(resume.getUuid());
-        }
+        Object searchParameter = getSearchParameterForExistedElement(resume.getUuid());
+        updateElement(resume, searchParameter);
     }
 
+    public Object getSearchParameterForExistedElement(String uuid) {
+        Object searchParameter = getSearchParameter(uuid);
+        if (!elementExists(searchParameter)) {
+            throw new NotExistStorageException(uuid);
+        }
+        return searchParameter;
+    }
 
-    protected abstract int getElementIndex(String uuid);
+    public Object getSearchParameterForNotExistedElement(String uuid) {
+        Object searchParameter = getSearchParameter(uuid);
+        if (elementExists(searchParameter)) {
+            throw new ExistStorageException(uuid);
+        }
+        return searchParameter;
+    }
 
-    protected abstract void deleteElement(int index);
+    protected abstract Object getSearchParameter(String uuid);
 
-    protected abstract Resume getResume(int index);
+    protected abstract boolean elementExists(Object searchParameter);
 
-    protected abstract void updateResume(Resume resume, int index);
+    protected abstract void saveElement(Resume resume, Object searchParameter);
 
-    protected abstract void saveResume(Resume resume, int index);
+    protected abstract void updateElement(Resume resume, Object searchParameter);
+
+    protected abstract Resume getElement(Object searchParameter);
+
+    protected abstract void deleteElement(Object searchParameter);
+
 }

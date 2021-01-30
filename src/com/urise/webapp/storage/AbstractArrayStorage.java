@@ -16,6 +16,40 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected int size = 0;
 
     @Override
+    protected void saveElement(Resume resume, Object searchParameter) {
+        if (size == storage.length) {
+            throw new StorageException("The storage is overflowed", resume.getUuid());
+        } else if (getSearchParameter(resume.getUuid()) >= 0) {
+            throw new ExistStorageException(resume.getUuid());
+        } else {
+            insertElement(resume, (Integer) searchParameter);
+            size++;
+        }
+    }
+
+    @Override
+    protected void updateElement(Resume resume, Object index) {
+        storage[(Integer) index] = resume;
+    }
+
+    @Override
+    protected Resume getElement(Object index) {
+        return storage[(Integer) index];
+    }
+
+    @Override
+    protected void deleteElement(Object index) {
+        replaceDeletedElement((Integer) index);
+        storage[size - 1] = null;
+        size--;
+    }
+
+    @Override
+    protected boolean elementExists(Object searchParameter) {
+        return (Integer) searchParameter >= 0;
+    }
+
+    @Override
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
@@ -28,37 +62,10 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
-    @Override
-    protected void deleteElement(int index) {
-        replaceDeletedElement(index);
-        storage[size - 1] = null;
-        size--;
-    }
-
-    @Override
-    protected Resume getResume(int index) {
-        return storage[index];
-    }
-
-    @Override
-    protected void updateResume(Resume resume, int index) {
-        storage[index] = resume;
-    }
-
-    @Override
-    protected void saveResume(Resume resume, int index) {
-        if (size == storage.length) {
-            throw new StorageException("The storage is overflowed", resume.getUuid());
-        } else if (getElementIndex(resume.getUuid()) >= 0) {
-            throw new ExistStorageException(resume.getUuid());
-        } else {
-            insertElement(resume, index);
-            size++;
-        }
-    }
+    protected abstract Integer getSearchParameter(String uuid);
 
     protected abstract void insertElement(Resume resume, int index);
 
