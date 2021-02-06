@@ -2,6 +2,8 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
+import java.util.List;
+
 public interface Storage {
 
     void clear();
@@ -10,11 +12,12 @@ public interface Storage {
 
     void save(Resume r);
 
-    Resume get(String uuid);
+    // TODO: 07.02.2021 return the initial signature (???)
+    Resume get(String uuid, String fullName);
 
     void delete(String uuid);
 
-    Resume[] getAll();
+    List<Resume> getAllSorted();
 
     int size();
 }

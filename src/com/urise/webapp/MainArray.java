@@ -1,7 +1,6 @@
 package com.urise.webapp;
 
 import com.urise.webapp.model.Resume;
-import com.urise.webapp.storage.ArrayStorage;
 import com.urise.webapp.storage.SortedArrayStorage;
 import com.urise.webapp.storage.Storage;
 
@@ -55,7 +54,7 @@ public class MainArray {
                     printAll();
                     break;
                 case "get":
-                    System.out.println(ARRAY_STORAGE.get(uuid));
+//                    System.out.println(ARRAY_STORAGE.get(uuid, ));
                     break;
                 case "clear":
                     ARRAY_STORAGE.clear();
@@ -71,15 +70,15 @@ public class MainArray {
     }
 
     static void printAll() {
-        Resume[] all = ARRAY_STORAGE.getAll();
-        System.out.println("----------------------------");
-        if (all.length == 0) {
-            System.out.println("Empty");
-        } else {
-            for (Resume r : all) {
-                System.out.println(r);
-            }
-        }
-        System.out.println("----------------------------");
+//        Resume[] all = ARRAY_STORAGE.getAll();
+//        System.out.println("----------------------------");
+//        if (all.length == 0) {
+//            System.out.println("Empty");
+//        } else {
+//            for (Resume r : all) {
+//                System.out.println(r);
+//            }
+//        }
+//        System.out.println("----------------------------");
     }
 }

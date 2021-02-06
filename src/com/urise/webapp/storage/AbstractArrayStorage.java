@@ -1,11 +1,12 @@
 package com.urise.webapp.storage;
 
-import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Array based storage for Resumes
@@ -16,13 +17,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected int size = 0;
 
     @Override
-    protected void saveElement(Resume resume, Object searchParameter) {
+    protected void saveElement(Resume resume, Object searchKey) {
         if (size == storage.length) {
             throw new StorageException("The storage is overflowed", resume.getUuid());
-        } else if (getSearchParameter(resume.getUuid()) >= 0) {
-            throw new ExistStorageException(resume.getUuid());
         } else {
-            insertElement(resume, (Integer) searchParameter);
+            insertElement(resume, (Integer) searchKey);
             size++;
         }
     }
@@ -45,8 +44,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean elementExists(Object searchParameter) {
-        return (Integer) searchParameter >= 0;
+    protected boolean elementExists(Object searchKey) {
+        return (Integer) searchKey >= 0;
     }
 
     @Override
@@ -56,8 +55,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
-        return Arrays.stream(storage).filter(Objects::nonNull).toArray((Resume[]::new));
+    public List<Resume> getAllSorted() {
+        return Arrays.stream(storage)
+                .filter(Objects::nonNull)
+                .sorted(RESUME_COMPARATOR)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -65,7 +67,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return size;
     }
 
-    protected abstract Integer getSearchParameter(String uuid);
+    protected abstract Integer getSearchKey(String uuid, String fullName);
 
     protected abstract void insertElement(Resume resume, int index);
 

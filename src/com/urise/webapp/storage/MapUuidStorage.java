@@ -2,11 +2,11 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
-import java.util.Collection;
-import java.util.TreeMap;
+import java.util.*;
+import java.util.stream.Collectors;
 
-public class MapStorage extends AbstractStorage {
-    private final TreeMap<String, Resume> resumes = new TreeMap<>();
+public class MapUuidStorage extends AbstractStorage {
+    private final Map<String, Resume> resumes = new TreeMap<>();
 
     @Override
     public void clear() {
@@ -14,9 +14,11 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
+    public List<Resume> getAllSorted() {
         Collection<Resume> allResumes = resumes.values();
-        return allResumes.toArray(new Resume[0]);
+        return allResumes.stream()
+                .sorted(RESUME_COMPARATOR)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -25,7 +27,7 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected Object getSearchParameter(String uuid) {
+    protected Object getSearchKey(String uuid, String fullName) {
         return uuid;
     }
 
@@ -35,12 +37,12 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected void saveElement(Resume resume, Object searchParameter) {
+    protected void saveElement(Resume resume, Object searchKey) {
         resumes.put(resume.getUuid(), resume);
     }
 
     @Override
-    protected void updateElement(Resume resume, Object searchParameter) {
+    protected void updateElement(Resume resume, Object searchKey) {
         resumes.replace(resume.getUuid(), resume);
     }
 
