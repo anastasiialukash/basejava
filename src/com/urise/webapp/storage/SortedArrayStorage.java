@@ -3,14 +3,15 @@ package com.urise.webapp.storage;
 import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
 
-    protected Integer getSearchKey(String uuid, String fullName) {
-        Resume searchKey = new Resume();
-        searchKey.setUuid(uuid);
-        searchKey.setFullName(fullName);
-        return Arrays.binarySearch(storage, 0, size, searchKey, RESUME_COMPARATOR);
+    private static final Comparator<Resume> SORT_ARR_COMPARATOR = Comparator.comparing(Resume::getUuid);
+
+    protected Integer getSearchKey(String uuid) {
+        Resume searchKey = new Resume(uuid, "testName");
+        return Arrays.binarySearch(storage, 0, size, searchKey, SORT_ARR_COMPARATOR);
     }
 
     @Override

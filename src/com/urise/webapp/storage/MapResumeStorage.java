@@ -12,7 +12,7 @@ public class MapResumeStorage extends AbstractStorage {
     private final Map<String, Resume> resumes = new TreeMap<>();
 
     @Override
-    protected Object getSearchKey(String uuid, String fullName) {
+    protected Object getSearchKey(String uuid) {
         return resumes.get(uuid);
     }
 

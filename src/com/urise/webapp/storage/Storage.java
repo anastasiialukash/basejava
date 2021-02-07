@@ -12,8 +12,7 @@ public interface Storage {
 
     void save(Resume r);
 
-    // TODO: 07.02.2021 return the initial signature (???)
-    Resume get(String uuid, String fullName);
+    Resume get(String uuid);
 
     void delete(String uuid);
 

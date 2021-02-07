@@ -13,42 +13,42 @@ public abstract class AbstractStorage implements Storage {
             .thenComparing(Resume::getUuid);
 
     public void save(Resume resume) {
-        Object searchKey = getSearchKeyForNotExistedElement(resume.getUuid(), resume.getFullName());
+        Object searchKey = getSearchKeyForNotExistedElement(resume.getUuid());
         saveElement(resume, searchKey);
     }
 
     public void delete(String uuid) {
-        Object searchKey = getSearchKeyForExistedElement(uuid, "");
+        Object searchKey = getSearchKeyForExistedElement(uuid);
         deleteElement(searchKey);
     }
 
-    public Resume get(String uuid, String fullName) {
-        Object searchKey = getSearchKeyForExistedElement(uuid, fullName);
+    public Resume get(String uuid) {
+        Object searchKey = getSearchKeyForExistedElement(uuid);
         return getElement(searchKey);
     }
 
     public void update(Resume resume) {
-        Object searchKey = getSearchKeyForExistedElement(resume.getUuid(), resume.getFullName());
+        Object searchKey = getSearchKeyForExistedElement(resume.getUuid());
         updateElement(resume, searchKey);
     }
 
-    public Object getSearchKeyForExistedElement(String uuid, String fullName) {
-        Object searchKey = getSearchKey(uuid, fullName);
+    public Object getSearchKeyForExistedElement(String uuid) {
+        Object searchKey = getSearchKey(uuid);
         if (!elementExists(searchKey)) {
             throw new NotExistStorageException(uuid);
         }
         return searchKey;
     }
 
-    public Object getSearchKeyForNotExistedElement(String uuid, String fullName) {
-        Object searchKey = getSearchKey(uuid, fullName);
+    public Object getSearchKeyForNotExistedElement(String uuid) {
+        Object searchKey = getSearchKey(uuid);
         if (elementExists(searchKey)) {
             throw new ExistStorageException(uuid);
         }
         return searchKey;
     }
 
-    protected abstract Object getSearchKey(String uuid, String fullName);
+    protected abstract Object getSearchKey(String uuid);
 
     protected abstract boolean elementExists(Object searchKey);
 
