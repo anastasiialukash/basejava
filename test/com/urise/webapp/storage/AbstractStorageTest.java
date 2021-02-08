@@ -18,17 +18,11 @@ public abstract class AbstractStorageTest {
     protected static final String UUID_NEW = "new";
     protected static final String UUID_DUMMY = "dummy";
 
-    protected static final String NAME_1 = "name1";
-    protected static final String NAME_2 = "name2";
-    protected static final String NAME_3 = "name3";
-    protected static final String NAME_NEW = "nameNew";
-    protected static final String NAME_DUMMY = "nameDummy";
-
-    protected static final Resume RESUME_1 = new Resume(UUID_1, NAME_1);
-    protected static final Resume RESUME_2 = new Resume(UUID_2, NAME_2);
-    protected static final Resume RESUME_3 = new Resume(UUID_3, NAME_3);
-    protected static final Resume RESUME_NEW = new Resume(UUID_NEW, NAME_NEW);
-    protected static final Resume RESUME_DUMMY = new Resume(UUID_DUMMY, NAME_DUMMY);
+    protected static final Resume RESUME_1 = new Resume(UUID_1, "name1");
+    protected static final Resume RESUME_2 = new Resume(UUID_2, "name2");
+    protected static final Resume RESUME_3 = new Resume(UUID_3, "name3");
+    protected static final Resume RESUME_NEW = new Resume(UUID_NEW, "nameNew");
+    protected static final Resume RESUME_DUMMY = new Resume(UUID_DUMMY, "nameDummy");
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -71,7 +65,7 @@ public abstract class AbstractStorageTest {
 
     @Test(expected = ExistStorageException.class)
     public void saveExists() {
-        storage.save(new Resume(UUID_1, NAME_1));
+        storage.save(new Resume(UUID_1, "name1"));
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -88,7 +82,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        Resume updatedResume = new Resume(UUID_3, NAME_3);
+        Resume updatedResume = new Resume(UUID_3, "name3");
         storage.update(RESUME_3);
         Assert.assertEquals(updatedResume, storage.get(UUID_3));
     }

@@ -3,10 +3,8 @@ package com.urise.webapp.storage;
 import com.urise.webapp.model.Resume;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 public class MapResumeStorage extends AbstractStorage {
     private final Map<String, Resume> resumes = new TreeMap<>();
@@ -43,17 +41,23 @@ public class MapResumeStorage extends AbstractStorage {
     }
 
     @Override
+    protected Resume[] getAllElements() {
+        Collection<Resume> allResumes = resumes.values();
+        return allResumes.toArray(new Resume[0]);
+    }
+
+    @Override
     public void clear() {
         resumes.clear();
     }
 
-    @Override
-    public List<Resume> getAllSorted() {
-        Collection<Resume> allResumes = resumes.values();
-        return allResumes.stream()
-                .sorted(RESUME_COMPARATOR)
-                .collect(Collectors.toList());
-    }
+//    @Override
+//    public List<Resume> getAllSorted() {
+//        Collection<Resume> allResumes = resumes.values();
+//        return allResumes.stream()
+//                .sorted(RESUME_COMPARATOR)
+//                .collect(Collectors.toList());
+//    }
 
     @Override
     public int size() {

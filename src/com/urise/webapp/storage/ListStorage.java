@@ -4,7 +4,6 @@ import com.urise.webapp.model.Resume;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ListStorage extends AbstractStorage {
     private final List<Resume> resumes = new ArrayList<>();
@@ -17,11 +16,6 @@ public class ListStorage extends AbstractStorage {
             }
         }
         return -1;
-    }
-
-    @Override
-    public List<Resume> getAllSorted() {
-        return resumes.stream().sorted(RESUME_COMPARATOR).collect(Collectors.toList());
     }
 
     @Override
@@ -43,6 +37,11 @@ public class ListStorage extends AbstractStorage {
     protected void deleteElement(Object searchKey) {
         int index = (Integer) searchKey;
         resumes.remove(index);
+    }
+
+    @Override
+    protected Resume[] getAllElements() {
+        return resumes.toArray(new Resume[0]);
     }
 
     @Override
