@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class MapUuidStorage extends AbstractStorage {
+public class MapUuidStorage extends AbstractStorage<String> {
     private final Map<String, Resume> resumes = new TreeMap<>();
 
     @Override
@@ -14,47 +14,38 @@ public class MapUuidStorage extends AbstractStorage {
         resumes.clear();
     }
 
-//    @Override
-//    public List<Resume> getAllSorted() {
-//        Collection<Resume> allResumes = resumes.values();
-//        return allResumes.stream()
-//                .sorted(RESUME_COMPARATOR)
-//                .collect(Collectors.toList());
-//    }
-
-
     @Override
     public int size() {
         return resumes.size();
     }
 
     @Override
-    protected Object getSearchKey(String uuid) {
+    protected String getSearchKey(String uuid) {
         return uuid;
     }
 
     @Override
-    protected boolean elementExists(Object key) {
+    protected boolean elementExists(String key) {
         return resumes.containsKey(key);
     }
 
     @Override
-    protected void saveElement(Resume resume, Object searchKey) {
+    protected void saveElement(Resume resume, String searchKey) {
         resumes.put(resume.getUuid(), resume);
     }
 
     @Override
-    protected void updateElement(Resume resume, Object searchKey) {
+    protected void updateElement(Resume resume, String searchKey) {
         resumes.replace(resume.getUuid(), resume);
     }
 
     @Override
-    protected Resume getElement(Object key) {
+    protected Resume getElement(String key) {
         return resumes.get(key);
     }
 
     @Override
-    protected void deleteElement(Object key) {
+    protected void deleteElement(String key) {
         resumes.remove(key);
     }
 

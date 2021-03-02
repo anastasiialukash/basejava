@@ -6,38 +6,37 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class MapResumeStorage extends AbstractStorage {
+public class MapResumeStorage extends AbstractStorage<Resume> {
     private final Map<String, Resume> resumes = new TreeMap<>();
 
     @Override
-    protected Object getSearchKey(String uuid) {
+    protected Resume getSearchKey(String uuid) {
         return resumes.get(uuid);
     }
 
     @Override
-    protected boolean elementExists(Object searchKey) {
+    protected boolean elementExists(Resume searchKey) {
         return resumes.containsValue(searchKey);
     }
 
     @Override
-    protected void saveElement(Resume resume, Object searchKey) {
+    protected void saveElement(Resume resume, Resume searchKey) {
         resumes.put(resume.getUuid(), resume);
     }
 
     @Override
-    protected void updateElement(Resume resume, Object searchKey) {
+    protected void updateElement(Resume resume, Resume searchKey) {
         resumes.replace(resume.getUuid(), resume);
     }
 
     @Override
-    protected Resume getElement(Object searchKey) {
-        return (Resume) searchKey;
+    protected Resume getElement(Resume searchKey) {
+        return searchKey;
     }
 
     @Override
-    protected void deleteElement(Object searchKey) {
-        Resume resume = (Resume) searchKey;
-        resumes.remove(resume.getUuid(), resume);
+    protected void deleteElement(Resume searchKey) {
+        resumes.remove(searchKey.getUuid(), searchKey);
     }
 
     @Override
@@ -50,14 +49,6 @@ public class MapResumeStorage extends AbstractStorage {
     public void clear() {
         resumes.clear();
     }
-
-//    @Override
-//    public List<Resume> getAllSorted() {
-//        Collection<Resume> allResumes = resumes.values();
-//        return allResumes.stream()
-//                .sorted(RESUME_COMPARATOR)
-//                .collect(Collectors.toList());
-//    }
 
     @Override
     public int size() {
