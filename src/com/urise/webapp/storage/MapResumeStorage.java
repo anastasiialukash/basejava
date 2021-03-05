@@ -2,9 +2,7 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class MapResumeStorage extends AbstractStorage<Resume> {
     private final Map<String, Resume> resumes = new TreeMap<>();
@@ -15,7 +13,7 @@ public class MapResumeStorage extends AbstractStorage<Resume> {
     }
 
     @Override
-    protected boolean elementExists(Resume searchKey) {
+    protected boolean isExist(Resume searchKey) {
         return resumes.containsValue(searchKey);
     }
 
@@ -40,9 +38,8 @@ public class MapResumeStorage extends AbstractStorage<Resume> {
     }
 
     @Override
-    protected Resume[] getAllElements() {
-        Collection<Resume> allResumes = resumes.values();
-        return allResumes.toArray(new Resume[0]);
+    protected List<Resume> getAllElements() {
+        return new ArrayList<>(resumes.values());
     }
 
     @Override

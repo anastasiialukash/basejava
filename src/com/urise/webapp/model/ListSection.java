@@ -1,10 +1,11 @@
 package com.urise.webapp.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class ListSection extends Section {
+public class ListSection extends AbstractSection {
 
-    public ArrayList<String> list;
+    private final List<String> list;
 
     public ListSection(ArrayList<String> list) {
         this.list = list;

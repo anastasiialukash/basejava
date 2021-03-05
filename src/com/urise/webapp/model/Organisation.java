@@ -5,11 +5,11 @@ import java.util.ArrayList;
 
 public class Organisation {
 
-    public String orgName;
-    public LocalDate startDate;
-    public LocalDate endDate;
-    public String title;
-    public String description;
+    private final String orgName;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
+    private final String title;
+    private final String description;
 
     public Organisation(
             String orgName,

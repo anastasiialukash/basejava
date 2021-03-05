@@ -10,7 +10,7 @@ import java.util.Map;
 public class ResumeTestData {
     public static void main(String[] args) {
         Map<ContactsType, String> contactsMap = new EnumMap<>(ContactsType.class);
-        Map<SectionType, Section> sectionsMap = new EnumMap<>(SectionType.class);
+        Map<SectionType, AbstractSection> sectionsMap = new EnumMap<>(SectionType.class);
         ArrayList<String> achievements = new ArrayList<>();
         ArrayList<String> qualification = new ArrayList<>();
         Organisation education1 = new Organisation(

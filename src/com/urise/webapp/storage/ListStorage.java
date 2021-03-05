@@ -40,12 +40,12 @@ public class ListStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected Resume[] getAllElements() {
-        return resumes.toArray(new Resume[0]);
+    protected List<Resume> getAllElements() {
+        return new ArrayList<>(resumes);
     }
 
     @Override
-    protected boolean elementExists(Integer searchKey) {
+    protected boolean isExist(Integer searchKey) {
         return searchKey >= 0;
     }
 

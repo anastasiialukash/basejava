@@ -1,10 +1,11 @@
 package com.urise.webapp.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class OrganisationSection extends Section {
+public class OrganisationSection extends AbstractSection {
 
-    public ArrayList<Organisation> orgList;
+    private final List<Organisation> orgList;
 
     public OrganisationSection(ArrayList<Organisation> orgList) {
         this.orgList = orgList;

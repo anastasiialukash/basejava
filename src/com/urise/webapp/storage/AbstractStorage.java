@@ -4,11 +4,10 @@ import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.Resume;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 public abstract class AbstractStorage<SK> implements Storage {
 
@@ -44,7 +43,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     private SK getSearchKeyForExistedElement(String uuid) {
         SK searchKey = getSearchKey(uuid);
-        if (!elementExists(searchKey)) {
+        if (!isExist(searchKey)) {
             LOG.warning("Resume " + uuid + "does not exist");
             throw new NotExistStorageException(uuid);
         }
@@ -53,7 +52,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     private SK getSearchKeyForNotExistedElement(String uuid) {
         SK searchKey = getSearchKey(uuid);
-        if (elementExists(searchKey)) {
+        if (isExist(searchKey)) {
             LOG.warning("Resume " + uuid + "already exists");
             throw new ExistStorageException(uuid);
         }
@@ -63,14 +62,14 @@ public abstract class AbstractStorage<SK> implements Storage {
     @Override
     public List<Resume> getAllSorted() {
         LOG.info("Call getAllSorted");
-        return Arrays.stream(getAllElements())
-                .sorted(RESUME_COMPARATOR)
-                .collect(Collectors.toList());
+        List<Resume> list = getAllElements();
+        Collections.sort(list);
+        return list;
     }
 
     protected abstract SK getSearchKey(String uuid);
 
-    protected abstract boolean elementExists(SK searchKey);
+    protected abstract boolean isExist(SK searchKey);
 
     protected abstract void saveElement(Resume resume, SK searchKey);
 
@@ -80,6 +79,6 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     protected abstract void deleteElement(SK searchKey);
 
-    protected abstract Resume[] getAllElements();
+    protected abstract List<Resume> getAllElements();
 
 }

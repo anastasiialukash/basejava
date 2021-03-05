@@ -2,6 +2,7 @@ package com.urise.webapp.model;
 
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -12,7 +13,7 @@ public class Resume implements Comparable<Resume> {
     private String uuid;
     private String fullName;
     private Map<ContactsType, String> contactsMap = new EnumMap<>(ContactsType.class);
-    private Map<SectionType, Section> sectionsMap = new EnumMap<>(SectionType.class);
+    private Map<SectionType, AbstractSection> sectionsMap = new EnumMap<>(SectionType.class);
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -27,7 +28,7 @@ public class Resume implements Comparable<Resume> {
             String uuid,
             String fullName,
             Map<ContactsType, String> contactsMap,
-            Map<SectionType, Section> sectionsMap) {
+            Map<SectionType, AbstractSection> sectionsMap) {
         this.uuid = uuid;
         this.fullName = fullName;
         this.contactsMap = contactsMap;
@@ -55,12 +56,12 @@ public class Resume implements Comparable<Resume> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Resume resume = (Resume) o;
-        return uuid.equals(resume.uuid);
+        return uuid.equals(resume.uuid) && fullName.equals(resume.fullName);
     }
 
     @Override
     public int hashCode() {
-        return uuid.hashCode();
+        return Objects.hash(uuid, fullName);
     }
 
     @Override
@@ -74,7 +75,7 @@ public class Resume implements Comparable<Resume> {
             builder.append("\n");
         }
 
-        for (Map.Entry<SectionType, Section> el : sectionsMap.entrySet()) {
+        for (Map.Entry<SectionType, AbstractSection> el : sectionsMap.entrySet()) {
             builder.append(el.getKey()).append(el.getValue().toString());
             builder.append("\n");
         }

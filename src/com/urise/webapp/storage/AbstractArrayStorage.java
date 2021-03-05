@@ -4,7 +4,7 @@ import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
-import java.util.Objects;
+import java.util.List;
 
 /**
  * Array based storage for Resumes
@@ -42,7 +42,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected boolean elementExists(Integer searchKey) {
+    protected boolean isExist(Integer searchKey) {
         return searchKey >= 0;
     }
 
@@ -53,10 +53,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected Resume[] getAllElements() {
-        return Arrays.stream(storage)
-                .filter(Objects::nonNull)
-                .toArray(Resume[]::new);
+    protected List<Resume> getAllElements() {
+        return Arrays.asList(Arrays.copyOfRange(storage, 0, size));
     }
 
     @Override
