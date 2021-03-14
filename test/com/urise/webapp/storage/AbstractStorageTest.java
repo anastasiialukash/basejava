@@ -1,5 +1,6 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.ResumeTestData;
 import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.Resume;
@@ -18,11 +19,17 @@ public abstract class AbstractStorageTest {
     protected static final String UUID_NEW = "new";
     protected static final String UUID_DUMMY = "dummy";
 
-    protected static final Resume RESUME_1 = new Resume(UUID_1, "name1");
-    protected static final Resume RESUME_2 = new Resume(UUID_2, "name2");
-    protected static final Resume RESUME_3 = new Resume(UUID_3, "name3");
-    protected static final Resume RESUME_NEW = new Resume(UUID_NEW, "nameNew");
-    protected static final Resume RESUME_DUMMY = new Resume(UUID_DUMMY, "nameDummy");
+//    protected static final Resume RESUME_1 = new Resume(UUID_1, "name1");
+//    protected static final Resume RESUME_2 = new Resume(UUID_2, "name2");
+//    protected static final Resume RESUME_3 = new Resume(UUID_3, "name3");
+//    protected static final Resume RESUME_NEW = new Resume(UUID_NEW, "nameNew");
+//    protected static final Resume RESUME_DUMMY = new Resume(UUID_DUMMY, "nameDummy");
+
+    protected static final Resume RESUME_1 = ResumeTestData.getResume(UUID_1, "name1");
+    protected static final Resume RESUME_2 = ResumeTestData.getResume(UUID_2, "name2");
+    protected static final Resume RESUME_3 = ResumeTestData.getResume(UUID_3, "name3");
+    protected static final Resume RESUME_NEW = ResumeTestData.getResume(UUID_NEW, "nameNew");
+    protected static final Resume RESUME_DUMMY = ResumeTestData.getResume(UUID_DUMMY, "nameDummy");
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;

@@ -51,17 +51,25 @@ public class Resume implements Comparable<Resume> {
         this.fullName = fullName;
     }
 
+    public String getContact(ContactsType type) {
+        return contactsMap.get(type);
+    }
+
+    public AbstractSection getSection(SectionType type) {
+        return sectionsMap.get(type);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Resume resume = (Resume) o;
-        return uuid.equals(resume.uuid) && fullName.equals(resume.fullName);
+        return uuid.equals(resume.uuid) && fullName.equals(resume.fullName) && contactsMap.equals(resume.contactsMap) && sectionsMap.equals(resume.sectionsMap);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid, fullName);
+        return Objects.hash(uuid, fullName, contactsMap, sectionsMap);
     }
 
     @Override

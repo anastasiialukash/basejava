@@ -5,40 +5,59 @@ import com.urise.webapp.model.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 
 public class ResumeTestData {
-    public static void main(String[] args) {
+
+    public static Resume getResume(
+            String uuid,
+            String fullname
+    ) {
+
         Map<ContactsType, String> contactsMap = new EnumMap<>(ContactsType.class);
         Map<SectionType, AbstractSection> sectionsMap = new EnumMap<>(SectionType.class);
-        ArrayList<String> achievements = new ArrayList<>();
-        ArrayList<String> qualification = new ArrayList<>();
+
+        List<String> achievements = new ArrayList<>();
+        List<String> qualification = new ArrayList<>();
+
+
         Organisation education1 = new Organisation(
                 "Siemens AG",
+                "https://new.siemens.com/ru/ru.html",
                 LocalDate.of(2005, 1, 1),
-                LocalDate.of(2005, 4, 1),
+                LocalDate.of(2005, 1, 1),
                 null,
                 "3 месяца обучения мобильным IN сетям (Берлин)"
         );
 
         Organisation education2 = new Organisation(
                 "Luxoft",
+                "https://www.luxoft-training.ru/kurs/obektno-orientirovannyy_analiz_i_proektirovanie_na_uml.html",
                 LocalDate.of(2011, 3, 1),
                 LocalDate.of(2011, 4, 1),
                 null,
-                "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"\n"
-        );
+                "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"\n");
 
         Organisation experience1 = new Organisation(
                 "Java Online Projects",
+                "https://javaops.ru/",
                 LocalDate.of(2013, 10, 1),
                 LocalDate.now(),
                 "Автор проекта",
                 "Создание, организация и проведение Java онлайн проектов и стажировок."
         );
 
+        Organisation addExperience1 = new Organisation(
+                LocalDate.of(2013, 10, 1),
+                LocalDate.now(),
+                "Разработчик",
+                "Разработка проектов"
+        );
+
         Organisation experience2 = new Organisation(
                 "Wrike",
+                "https://www.wrike.com/",
                 LocalDate.of(2014, 10, 1),
                 LocalDate.of(2016, 1, 1),
                 "Старший разработчик (backend)",
@@ -47,13 +66,14 @@ public class ResumeTestData {
                         "Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."
         );
 
-        ArrayList<Organisation> educationList = new ArrayList<>();
-        ArrayList<Organisation> experienceList = new ArrayList<>();
+        List<Organisation> educationList = new ArrayList<>();
+        List<Organisation> experienceList = new ArrayList<>();
 
         educationList.add(education1);
         educationList.add(education2);
 
         experienceList.add(experience1);
+        experienceList.add(addExperience1);
         experienceList.add(experience2);
 
         achievements.add("С 2013 года: разработка проектов \"Разработка Web приложения\"");
@@ -77,13 +97,12 @@ public class ResumeTestData {
         sectionsMap.put(SectionType.EDUCATION, new OrganisationSection(educationList));
         sectionsMap.put(SectionType.EXPERIENCE, new OrganisationSection(experienceList));
 
-        Resume resume = new Resume(
-                "uuid000",
-                "Test Name",
-                contactsMap,
-                sectionsMap
-        );
 
-        System.out.println(resume);
+        return new Resume(
+                uuid,
+                fullname,
+                contactsMap,
+                sectionsMap);
     }
+
 }
