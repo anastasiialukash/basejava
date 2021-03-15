@@ -30,19 +30,19 @@ public class MainFile {
             throw new RuntimeException(e);
         }
 
-        MainFile testFile = new MainFile();
-        testFile.getFilesNames("/Users/alukash/IdeaProjects/basejava/src/com/urise/webapp");
+        getFilesNames("src/com/urise/webapp");
     }
 
-    public void getFilesNames(String absolutePath) {
-        File directory = new File(absolutePath);
+    public static void getFilesNames(String relativePath) {
+        File directory = new File(relativePath);
         File[] fileList = directory.listFiles();
         if (fileList != null) {
             for (File file : fileList) {
                 if (file.isFile()) {
                     System.out.println(file.getName());
                 } else if (file.isDirectory()) {
-                    getFilesNames(file.getAbsolutePath());
+                    getFilesNames(file.getPath());
+                    System.out.println(file.getPath());
                 }
             }
         }

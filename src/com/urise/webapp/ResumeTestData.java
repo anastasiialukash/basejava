@@ -10,10 +10,11 @@ import java.util.Map;
 
 public class ResumeTestData {
 
-    public static Resume getResume(
-            String uuid,
-            String fullname
-    ) {
+    public static void main(String[] args) {
+        System.out.println(getResume("1111", "testName").toString());
+    }
+
+    public static Resume getResume(String uuid, String fullname) {
 
         Map<ContactsType, String> contactsMap = new EnumMap<>(ContactsType.class);
         Map<SectionType, AbstractSection> sectionsMap = new EnumMap<>(SectionType.class);
@@ -21,49 +22,77 @@ public class ResumeTestData {
         List<String> achievements = new ArrayList<>();
         List<String> qualification = new ArrayList<>();
 
+        List<ResumeHistory> edu1 = new ArrayList<>();
+        ResumeHistory roleEdu1 = new ResumeHistory
+                (
+                        LocalDate.of(2005, 1, 1),
+                        LocalDate.of(2005, 1, 1),
+                        null,
+                        "3 месяца обучения мобильным IN сетям (Берлин)"
+                );
+
+        edu1.add(roleEdu1);
 
         Organisation education1 = new Organisation(
                 "Siemens AG",
                 "https://new.siemens.com/ru/ru.html",
-                LocalDate.of(2005, 1, 1),
-                LocalDate.of(2005, 1, 1),
+                edu1);
+
+        List<ResumeHistory> edu2 = new ArrayList<>();
+        ResumeHistory roleEdu2 = new ResumeHistory(
+                LocalDate.of(2011, 3, 1),
+                LocalDate.of(2011, 4, 1),
                 null,
-                "3 месяца обучения мобильным IN сетям (Берлин)"
+                "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"\n"
         );
+        edu2.add(roleEdu2);
 
         Organisation education2 = new Organisation(
                 "Luxoft",
                 "https://www.luxoft-training.ru/kurs/obektno-orientirovannyy_analiz_i_proektirovanie_na_uml.html",
-                LocalDate.of(2011, 3, 1),
-                LocalDate.of(2011, 4, 1),
-                null,
-                "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"\n");
+                edu2);
 
-        Organisation experience1 = new Organisation(
-                "Java Online Projects",
-                "https://javaops.ru/",
+        List<ResumeHistory> job1 = new ArrayList<>();
+        ResumeHistory role1Job1 = new ResumeHistory(
                 LocalDate.of(2013, 10, 1),
                 LocalDate.now(),
                 "Автор проекта",
                 "Создание, организация и проведение Java онлайн проектов и стажировок."
         );
 
-        Organisation addExperience1 = new Organisation(
+        ResumeHistory role2Job1 = new ResumeHistory(
                 LocalDate.of(2013, 10, 1),
                 LocalDate.now(),
                 "Разработчик",
                 "Разработка проектов"
         );
 
-        Organisation experience2 = new Organisation(
-                "Wrike",
-                "https://www.wrike.com/",
+        job1.add(role1Job1);
+        job1.add(role2Job1);
+
+
+        Organisation experience1 = new Organisation(
+                "Java Online Projects",
+                "https://javaops.ru/",
+                job1
+        );
+
+        List<ResumeHistory> job2 = new ArrayList<>();
+        ResumeHistory roleJob2 = new ResumeHistory(
                 LocalDate.of(2014, 10, 1),
                 LocalDate.of(2016, 1, 1),
                 "Старший разработчик (backend)",
                 "Проектирование и разработка онлайн платформы управления проектами Wrike " +
                         "(Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). " +
                         "Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."
+        );
+
+        job2.add(roleJob2);
+
+        Organisation experience2 = new Organisation(
+                "Wrike",
+                "https://www.wrike.com/",
+                job2
         );
 
         List<Organisation> educationList = new ArrayList<>();
@@ -73,7 +102,6 @@ public class ResumeTestData {
         educationList.add(education2);
 
         experienceList.add(experience1);
-        experienceList.add(addExperience1);
         experienceList.add(experience2);
 
         achievements.add("С 2013 года: разработка проектов \"Разработка Web приложения\"");
@@ -97,12 +125,7 @@ public class ResumeTestData {
         sectionsMap.put(SectionType.EDUCATION, new OrganisationSection(educationList));
         sectionsMap.put(SectionType.EXPERIENCE, new OrganisationSection(experienceList));
 
-
-        return new Resume(
-                uuid,
-                fullname,
-                contactsMap,
-                sectionsMap);
+        return new Resume(uuid, fullname, contactsMap, sectionsMap);
     }
 
 }

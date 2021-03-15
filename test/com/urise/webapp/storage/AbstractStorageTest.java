@@ -8,6 +8,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class AbstractStorageTest {
@@ -18,12 +19,6 @@ public abstract class AbstractStorageTest {
     protected static final String UUID_3 = "uuid3";
     protected static final String UUID_NEW = "new";
     protected static final String UUID_DUMMY = "dummy";
-
-//    protected static final Resume RESUME_1 = new Resume(UUID_1, "name1");
-//    protected static final Resume RESUME_2 = new Resume(UUID_2, "name2");
-//    protected static final Resume RESUME_3 = new Resume(UUID_3, "name3");
-//    protected static final Resume RESUME_NEW = new Resume(UUID_NEW, "nameNew");
-//    protected static final Resume RESUME_DUMMY = new Resume(UUID_DUMMY, "nameDummy");
 
     protected static final Resume RESUME_1 = ResumeTestData.getResume(UUID_1, "name1");
     protected static final Resume RESUME_2 = ResumeTestData.getResume(UUID_2, "name2");
@@ -58,9 +53,7 @@ public abstract class AbstractStorageTest {
     public void getAllSorted() {
         List<Resume> resumes = storage.getAllSorted();
         Assert.assertEquals(3, resumes.size());
-        Assert.assertEquals(RESUME_1, resumes.get(0));
-        Assert.assertEquals(RESUME_2, resumes.get(1));
-        Assert.assertEquals(RESUME_3, resumes.get(2));
+        Assert.assertEquals(resumes, Arrays.asList(RESUME_1, RESUME_2, RESUME_3));
     }
 
     @Test
@@ -89,9 +82,9 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        Resume updatedResume = new Resume(UUID_3, "name3");
+        Resume updatedResume = ResumeTestData.getResume(UUID_3, "name3");
         storage.update(RESUME_3);
-        Assert.assertEquals(updatedResume, storage.get(UUID_3));
+        Assert.assertEquals(updatedResume.toString(), storage.get(UUID_3).toString());
     }
 
     @Test(expected = NotExistStorageException.class)
