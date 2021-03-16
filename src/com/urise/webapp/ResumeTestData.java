@@ -22,8 +22,8 @@ public class ResumeTestData {
         List<String> achievements = new ArrayList<>();
         List<String> qualification = new ArrayList<>();
 
-        List<ResumeHistory> edu1 = new ArrayList<>();
-        ResumeHistory roleEdu1 = new ResumeHistory
+        List<Experience> edu1 = new ArrayList<>();
+        Experience roleEdu1 = new Experience
                 (
                         LocalDate.of(2005, 1, 1),
                         LocalDate.of(2005, 1, 1),
@@ -38,8 +38,8 @@ public class ResumeTestData {
                 "https://new.siemens.com/ru/ru.html",
                 edu1);
 
-        List<ResumeHistory> edu2 = new ArrayList<>();
-        ResumeHistory roleEdu2 = new ResumeHistory(
+        List<Experience> edu2 = new ArrayList<>();
+        Experience roleEdu2 = new Experience(
                 LocalDate.of(2011, 3, 1),
                 LocalDate.of(2011, 4, 1),
                 null,
@@ -52,15 +52,15 @@ public class ResumeTestData {
                 "https://www.luxoft-training.ru/kurs/obektno-orientirovannyy_analiz_i_proektirovanie_na_uml.html",
                 edu2);
 
-        List<ResumeHistory> job1 = new ArrayList<>();
-        ResumeHistory role1Job1 = new ResumeHistory(
+        List<Experience> job1 = new ArrayList<>();
+        Experience role1Job1 = new Experience(
                 LocalDate.of(2013, 10, 1),
                 LocalDate.now(),
                 "Автор проекта",
                 "Создание, организация и проведение Java онлайн проектов и стажировок."
         );
 
-        ResumeHistory role2Job1 = new ResumeHistory(
+        Experience role2Job1 = new Experience(
                 LocalDate.of(2013, 10, 1),
                 LocalDate.now(),
                 "Разработчик",
@@ -77,8 +77,8 @@ public class ResumeTestData {
                 job1
         );
 
-        List<ResumeHistory> job2 = new ArrayList<>();
-        ResumeHistory roleJob2 = new ResumeHistory(
+        List<Experience> job2 = new ArrayList<>();
+        Experience roleJob2 = new Experience(
                 LocalDate.of(2014, 10, 1),
                 LocalDate.of(2016, 1, 1),
                 "Старший разработчик (backend)",
