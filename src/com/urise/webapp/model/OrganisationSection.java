@@ -1,13 +1,19 @@
 package com.urise.webapp.model;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class OrganisationSection extends AbstractSection {
 
+    private static final long serialVersionUID = 1L;
     private final List<Organisation> orgList;
 
     public OrganisationSection(List<Organisation> orgList) {
         this.orgList = orgList;
+    }
+
+    public OrganisationSection(Organisation... organisations) {
+        this(Arrays.asList(organisations));
     }
 
     public List<Organisation> getOrgList() {
