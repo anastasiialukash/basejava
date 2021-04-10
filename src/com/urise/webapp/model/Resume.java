@@ -14,8 +14,8 @@ public class Resume implements Comparable<Resume>, Serializable {
     private static final long serialVersionUID = 1L;
     private String uuid;
     private String fullName;
-    private Map<ContactsType, String> contactsMap = new EnumMap<>(ContactsType.class);
-    private Map<SectionType, AbstractSection> sectionsMap = new EnumMap<>(SectionType.class);
+    private Map<ContactType, String> contactsMap = new EnumMap<>(ContactType.class);
+    private Map<SectionType, Section> sectionsMap = new EnumMap<>(SectionType.class);
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -29,8 +29,8 @@ public class Resume implements Comparable<Resume>, Serializable {
     public Resume(
             String uuid,
             String fullName,
-            Map<ContactsType, String> contactsMap,
-            Map<SectionType, AbstractSection> sectionsMap) {
+            Map<ContactType, String> contactsMap,
+            Map<SectionType, Section> sectionsMap) {
         this.uuid = uuid;
         this.fullName = fullName;
         this.contactsMap = contactsMap;
@@ -53,19 +53,19 @@ public class Resume implements Comparable<Resume>, Serializable {
         this.fullName = fullName;
     }
 
-    public String getContact(ContactsType type) {
+    public String getContact(ContactType type) {
         return contactsMap.get(type);
     }
 
-    public AbstractSection getSection(SectionType type) {
+    public Section getSection(SectionType type) {
         return sectionsMap.get(type);
     }
 
-    public void addContact(ContactsType type, String value) {
+    public void addContact(ContactType type, String value) {
         contactsMap.put(type, value);
     }
 
-    public void addSection(SectionType type, AbstractSection section) {
+    public void addSection(SectionType type, Section section) {
         sectionsMap.put(type, section);
     }
 
@@ -88,12 +88,12 @@ public class Resume implements Comparable<Resume>, Serializable {
         builder.append(uuid).append(':').append(fullName);
         builder.append("\n");
 
-        for (Map.Entry<ContactsType, String> el : contactsMap.entrySet()) {
+        for (Map.Entry<ContactType, String> el : contactsMap.entrySet()) {
             builder.append(el.getKey()).append(el.getValue());
             builder.append("\n");
         }
 
-        for (Map.Entry<SectionType, AbstractSection> el : sectionsMap.entrySet()) {
+        for (Map.Entry<SectionType, Section> el : sectionsMap.entrySet()) {
             builder.append(el.getKey()).append(el.getValue().toString());
             builder.append("\n");
         }

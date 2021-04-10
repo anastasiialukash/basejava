@@ -3,7 +3,7 @@ package com.urise.webapp.model;
 import java.util.Arrays;
 import java.util.List;
 
-public class OrganisationSection extends AbstractSection {
+public class OrganisationSection extends Section {
 
     private static final long serialVersionUID = 1L;
     private final List<Organisation> orgList;

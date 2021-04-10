@@ -41,10 +41,10 @@ public class FileStorage extends AbstractStorage<File> {
     protected void saveElement(Resume resume, File file) {
         try {
             file.createNewFile();
-            streamSerializer.writeData(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("IO error", file.getName(), e);
         }
+        updateElement(resume, file);
     }
 
     @Override
@@ -58,57 +58,55 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     protected Resume getElement(File file) {
-        Resume resume;
         try {
-            resume = streamSerializer.readData(new BufferedInputStream((new FileInputStream(file))));
+            return streamSerializer.readData(new BufferedInputStream((new FileInputStream(file))));
         } catch (IOException e) {
             throw new StorageException("Reading file error", file.getName(), e);
         }
-        return resume;
     }
 
     @Override
     protected void deleteElement(File file) {
-        File[] allFiles = directory.listFiles();
-        if (allFiles != null) {
-            for (File entry : allFiles) {
-                if (entry.equals(file)) {
-                    file.delete();
-                }
-            }
+        file.delete();
+        if (file.exists()) {
+            throw new StorageException("The file " + file.getName() + " was not deleted");
         }
     }
 
     @Override
     protected List<Resume> getAllElements() {
         File[] allFiles = directory.listFiles();
-        List<Resume> resumes = new ArrayList<>();
-        if (allFiles != null) {
-            for (File file : allFiles) {
-                try {
-                    Resume resume = streamSerializer.readData(new BufferedInputStream((new FileInputStream(file))));
-                    resumes.add(resume);
-                } catch (IOException e) {
-                    throw new StorageException("Reading file error", file.getName(), e);
-                }
 
-            }
+        if (allFiles == null) {
+            throw new StorageException("Error while reading directory");
         }
+
+        List<Resume> resumes = new ArrayList<>();
+        for (File file : allFiles) {
+            resumes.add(getElement(file));
+        }
+
         return resumes;
     }
 
     @Override
     public void clear() {
         File[] allFiles = directory.listFiles();
-        if (allFiles != null) {
-            for (File file : allFiles) {
-                file.delete();
-            }
+        if (allFiles == null) {
+            throw new StorageException("Error while reading directory");
+        }
+
+        for (File file : allFiles) {
+            deleteElement(file);
         }
     }
 
     @Override
     public int size() {
-        return Objects.requireNonNull(directory.listFiles()).length;
+        String[] files = directory.list();
+        if (files == null) {
+            throw new StorageException("Error while reading directory");
+        }
+        return files.length;
     }
 }

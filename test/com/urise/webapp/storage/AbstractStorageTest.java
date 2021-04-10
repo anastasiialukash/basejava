@@ -1,14 +1,14 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.ResumeTestData;
 import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
-import com.urise.webapp.model.*;
+import com.urise.webapp.model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,41 +23,11 @@ public abstract class AbstractStorageTest {
     private static final String UUID_NEW = "new";
     private static final String UUID_DUMMY = "dummy";
 
-    private static final Resume RESUME_1;
-    private static final Resume RESUME_2;
-    private static final Resume RESUME_3;
-    private static final Resume RESUME_NEW;
-    private static final Resume RESUME_DUMMY;
-
-    static {
-        RESUME_1 = new Resume(UUID_1, "name1");
-        RESUME_2 = new Resume(UUID_2, "name2");
-        RESUME_3 = new Resume(UUID_3, "name3");
-        RESUME_NEW = new Resume(UUID_NEW, "nameNew");
-        RESUME_DUMMY = new Resume(UUID_DUMMY, "nameDummy");
-
-        RESUME_1.addContact(ContactsType.EMAIL, "mail1@ya.ru");
-        RESUME_1.addContact(ContactsType.PHONE, "11111");
-        RESUME_1.addSection(SectionType.OBJECTIVE, new TextSection("Objective1"));
-        RESUME_1.addSection(SectionType.PERSONAL, new TextSection("Personal data"));
-        RESUME_1.addSection(SectionType.ACHIEVEMENT, new ListSection("Achivment11", "Achivment12", "Achivment13"));
-        RESUME_1.addSection(SectionType.QUALIFICATIONS, new ListSection("Java", "SQL", "JavaScript"));
-        RESUME_1.addSection(SectionType.EXPERIENCE, new OrganisationSection(
-                new Organisation("Organisation11", "http://Organisation11.ru",
-                        new Experience(2005, Month.JANUARY, "position1", "content1"),
-                        new Experience(2001, Month.MARCH, 2005, Month.JANUARY, "position2", "content2"))));
-        RESUME_1.addSection(SectionType.EDUCATION,
-                new OrganisationSection(
-                        new Organisation("Institute", null,
-                                new Experience(1996, Month.JANUARY, 2000, Month.DECEMBER, "aspirant", null),
-                                new Experience(2001, Month.MARCH, 2005, Month.JANUARY, "student", "IT facultet")),
-                        new Organisation("Organisation12", "http://Organisation12.ru")));
-        RESUME_2.addContact(ContactsType.SKYPE, "skype2");
-        RESUME_2.addContact(ContactsType.PHONE, "22222");
-        RESUME_1.addSection(SectionType.EXPERIENCE,
-                new OrganisationSection(new Organisation("Organisation2", "http://Organisation2.ru",
-                        new Experience(2015, Month.JANUARY, "position1", "content1"))));
-    }
+    private static final Resume RESUME_1 = ResumeTestData.getResume(UUID_1, "name1");
+    private static final Resume RESUME_2 = ResumeTestData.getResume(UUID_2, "name2");
+    private static final Resume RESUME_3 = ResumeTestData.getResume(UUID_3, "name3");
+    private static final Resume RESUME_NEW = ResumeTestData.getResume(UUID_NEW, "new");
+    private static final Resume RESUME_DUMMY = ResumeTestData.getResume(UUID_DUMMY, "dummy");
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -115,9 +85,9 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        Resume updatedResume = new Resume(UUID_3, "name3");
+        Resume updatedResume = ResumeTestData.getResume(UUID_3, "name3");
         storage.update(RESUME_3);
-        Assert.assertEquals(updatedResume.toString(), storage.get(UUID_3).toString());
+        Assert.assertEquals(updatedResume, storage.get(UUID_3));
     }
 
     @Test(expected = NotExistStorageException.class)
