@@ -26,7 +26,6 @@ public class FileStorage extends AbstractStorage<File> {
         }
     }
 
-
     @Override
     protected File getSearchKey(String uuid) {
         return new File(directory, uuid);
@@ -67,8 +66,7 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     protected void deleteElement(File file) {
-        file.delete();
-        if (file.exists()) {
+        if (!file.delete()) {
             throw new StorageException("The file " + file.getName() + " was not deleted");
         }
     }
@@ -76,26 +74,18 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected List<Resume> getAllElements() {
         File[] allFiles = directory.listFiles();
-
-        if (allFiles == null) {
-            throw new StorageException("Error while reading directory");
-        }
-
+        isNull(allFiles);
         List<Resume> resumes = new ArrayList<>();
         for (File file : allFiles) {
             resumes.add(getElement(file));
         }
-
         return resumes;
     }
 
     @Override
     public void clear() {
         File[] allFiles = directory.listFiles();
-        if (allFiles == null) {
-            throw new StorageException("Error while reading directory");
-        }
-
+        isNull(allFiles);
         for (File file : allFiles) {
             deleteElement(file);
         }
@@ -103,10 +93,14 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     public int size() {
-        String[] files = directory.list();
+        File[] files = directory.listFiles();
+        isNull(files);
+        return files.length;
+    }
+
+    private void isNull(File[] files) {
         if (files == null) {
             throw new StorageException("Error while reading directory");
         }
-        return files.length;
     }
 }
