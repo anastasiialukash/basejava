@@ -73,10 +73,8 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     protected List<Resume> getAllElements() {
-        File[] allFiles = directory.listFiles();
-        isNull(allFiles);
         List<Resume> resumes = new ArrayList<>();
-        for (File file : allFiles) {
+        for (File file : getFiles()) {
             resumes.add(getElement(file));
         }
         return resumes;
@@ -84,23 +82,21 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        File[] allFiles = directory.listFiles();
-        isNull(allFiles);
-        for (File file : allFiles) {
+        for (File file : getFiles()) {
             deleteElement(file);
         }
     }
 
     @Override
     public int size() {
-        File[] files = directory.listFiles();
-        isNull(files);
-        return files.length;
+        return getFiles().length;
     }
 
-    private void isNull(File[] files) {
+    private File[] getFiles() {
+        File[] files = directory.listFiles();
         if (files == null) {
             throw new StorageException("Error while reading directory");
         }
+        return files;
     }
 }
