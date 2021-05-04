@@ -1,5 +1,10 @@
 package com.urise.webapp.model;
 
+import com.urise.webapp.util.LocalDateAdapter;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
@@ -10,11 +15,23 @@ import java.util.Objects;
 import static com.urise.webapp.util.DateUtil.NOW;
 import static com.urise.webapp.util.DateUtil.of;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Organisation implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private final Link homePage;
+    private Link homePage;
     private List<Experience> experience;
+
+    public Link getHomePage() {
+        return homePage;
+    }
+
+    public List<Experience> getExperience() {
+        return experience;
+    }
+
+    public Organisation() {
+    }
 
     public Organisation(String name, String url, Experience... experience) {
         this(new Link(name, url), Arrays.asList(experience));
@@ -40,23 +57,32 @@ public class Organisation implements Serializable {
 
     @Override
     public String toString() {
-        return "Organization(" + homePage + "," + experience + ')';
+        if (experience != null) {
+            return "Organisation(" + homePage + "," + experience + ')';
+        }
+        return "Organisation(" + homePage;
     }
 
+    @XmlAccessorType(XmlAccessType.FIELD)
     public static class Experience implements Serializable {
 
         private static final long serialVersionUID = 1L;
 
-        private final LocalDate startDate;
-        private final LocalDate endDate;
-        private final String title;
-        private final String description;
+        @XmlJavaTypeAdapter(LocalDateAdapter.class)
+        private LocalDate startDate;
+        @XmlJavaTypeAdapter(LocalDateAdapter.class)
+        private LocalDate endDate;
+        private String title;
+        private String description;
+
+        public Experience() {
+        }
 
         public Experience(LocalDate startDate, LocalDate endDate, String title, String description) {
             this.startDate = startDate;
             this.endDate = endDate;
             this.title = title;
-            this.description = description;
+            this.description = description == null ? "" : description;
         }
 
         public Experience(int startYear, Month startMonth, String title, String description) {

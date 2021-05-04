@@ -1,12 +1,15 @@
 package com.urise.webapp.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.Arrays;
 import java.util.List;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class OrganisationSection extends Section {
 
     private static final long serialVersionUID = 1L;
-    private final List<Organisation> orgList;
+    private List<Organisation> orgList;
 
     public OrganisationSection(List<Organisation> orgList) {
         this.orgList = orgList;
@@ -19,6 +22,8 @@ public class OrganisationSection extends Section {
     public List<Organisation> getOrgList() {
         return orgList;
     }
+
+    public OrganisationSection() {}
 
     @Override
     public boolean equals(Object o) {

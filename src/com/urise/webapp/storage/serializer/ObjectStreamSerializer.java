@@ -5,7 +5,7 @@ import com.urise.webapp.model.Resume;
 
 import java.io.*;
 
-public class ObjectStreamSerializer implements StreamSerializer {
+public class ObjectStreamSerializer implements com.urise.webapp.storage.serializer.StreamSerializer {
     @Override
     public void writeData(Resume resume, OutputStream outputStream) throws IOException {
         try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)) {
