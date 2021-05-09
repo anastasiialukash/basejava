@@ -11,18 +11,6 @@ import java.util.Map;
 
 public class DataStreamSerializer implements StreamSerializer {
 
-    interface CollectionElement {
-        void read() throws IOException;
-    }
-
-    interface ReadElement<E> {
-        E read() throws IOException;
-    }
-
-    interface WriteElement<E> {
-        void write(E e) throws IOException;
-    }
-
     @Override
     public void writeData(Resume resume, OutputStream os) throws IOException {
         try (DataOutputStream dos = new DataOutputStream(os)) {
@@ -50,8 +38,9 @@ public class DataStreamSerializer implements StreamSerializer {
                     case EXPERIENCE:
                     case EDUCATION:
                         writeCollection(dos, ((OrganisationSection) section).getOrgList(), org -> {
-                            dos.writeUTF(org.getHomePage().getName());
-                            dos.writeUTF(org.getHomePage().getUrl());
+                            Link homePage = org.getHomePage();
+                            dos.writeUTF(homePage.getName());
+                            dos.writeUTF(homePage.getUrl());
                             writeCollection(dos, org.getExperience(), experience -> {
                                 writeDate(dos, experience.getStartDate());
                                 writeDate(dos, experience.getEndDate());
@@ -65,30 +54,45 @@ public class DataStreamSerializer implements StreamSerializer {
         }
     }
 
-    void writeDate(DataOutputStream dos, LocalDate date) throws IOException {
-        dos.writeInt(date.getYear());
-        dos.writeInt(date.getMonth().getValue());
+    @Override
+    public Resume readData(InputStream is) throws IOException {
+        try (DataInputStream dis = new DataInputStream(is)) {
+            String uuid = dis.readUTF();
+            String fullName = dis.readUTF();
+            Resume resume = new Resume(uuid, fullName);
+            readElements(dis, () -> resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
+            readElements(dis, () -> {
+                SectionType sectionType = SectionType.valueOf(dis.readUTF());
+                resume.addSection(sectionType, readSection(dis, sectionType));
+            });
+            return resume;
+        }
     }
 
-    LocalDate readDate(DataInputStream dis) throws IOException {
-        return LocalDate.of(dis.readInt(), dis.readInt(), 1);
-    }
-
-    <E> void writeCollection(DataOutputStream dos, Collection<E> collection, WriteElement<E> writer) throws IOException {
+    private <E> void writeCollection(DataOutputStream dos, Collection<E> collection, WriteElement<E> writer) throws IOException {
         dos.writeInt(collection.size());
         for (E element : collection) {
             writer.write(element);
         }
     }
 
-    void readElements(DataInputStream dis, CollectionElement element) throws IOException {
+    private void writeDate(DataOutputStream dos, LocalDate date) throws IOException {
+        dos.writeInt(date.getYear());
+        dos.writeInt(date.getMonth().getValue());
+    }
+
+    private LocalDate readDate(DataInputStream dis) throws IOException {
+        return LocalDate.of(dis.readInt(), dis.readInt(), 1);
+    }
+
+    private void readElements(DataInputStream dis, CollectionElement element) throws IOException {
         int size = dis.readInt();
         for (int i = 0; i < size; i++) {
             element.read();
         }
     }
 
-    <E> List<E> readList(DataInputStream dis, ReadElement<E> reader) throws IOException {
+    private <E> List<E> readList(DataInputStream dis, ReadElement<E> reader) throws IOException {
         int size = dis.readInt();
         List<E> list = new ArrayList<>();
         for (int i = 0; i < size; i++) {
@@ -97,7 +101,7 @@ public class DataStreamSerializer implements StreamSerializer {
         return list;
     }
 
-    Section readSection(DataInputStream dis, SectionType sectionType) throws IOException {
+    private Section readSection(DataInputStream dis, SectionType sectionType) throws IOException {
         switch (sectionType) {
             case PERSONAL:
             case OBJECTIVE:
@@ -115,18 +119,15 @@ public class DataStreamSerializer implements StreamSerializer {
         }
     }
 
-    @Override
-    public Resume readData(InputStream is) throws IOException {
-        try (DataInputStream dis = new DataInputStream(is)) {
-            String uuid = dis.readUTF();
-            String fullName = dis.readUTF();
-            Resume resume = new Resume(uuid, fullName);
-            readElements(dis, () -> resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
-            readElements(dis, () -> {
-                SectionType sectionType = SectionType.valueOf(dis.readUTF());
-                resume.addSection(sectionType, readSection(dis, sectionType));
-            });
-            return resume;
-        }
+    private interface CollectionElement {
+        void read() throws IOException;
+    }
+
+    private interface ReadElement<E> {
+        E read() throws IOException;
+    }
+
+    private interface WriteElement<E> {
+        void write(E e) throws IOException;
     }
 }
